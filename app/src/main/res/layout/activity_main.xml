@@ -37,8 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="337dp"
-        android:gravity="center"
         android:background="#C0FFEE"
+        android:gravity="center"
         android:text="Bill Clinton"
         android:textSize="40sp" />
 
@@ -66,12 +66,22 @@
 
     <ImageView
         android:id="@+id/addButton"
-        android:layout_width="130dp"
+        android:layout_width="135dp"
         android:layout_height="75dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="14dp"
         android:layout_marginBottom="23dp"
         app:srcCompat="@drawable/ic_baseline_add_circle_outline_24" />
+
+    <ImageView
+        android:id="@+id/flashcardnextbutton"
+        android:layout_width="135dp"
+        android:layout_height="75dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="-17dp"
+        android:layout_marginBottom="449dp"
+        app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
 
 </RelativeLayout>

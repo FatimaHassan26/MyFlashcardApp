@@ -12,18 +12,36 @@ import androidx.activity.result.contract.ActivityResultContracts
 
 
 class MainActivity : AppCompatActivity() {
+    lateinit var flashcardDatabase: FlashcardDatabase
+    var allFlashcards = mutableListOf<Flashcard>()
+
+    var currCardDisplayedIndex = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-        findViewById<View>(R.id.flashcard_question).setOnClickListener {
+
+        flashcardDatabase = FlashcardDatabase(this)
+        allFlashcards = flashcardDatabase.getAllCards().toMutableList()
+       val flashcardQuestion = findViewById<TextView>(R.id.flashcard_question)
+        val flashcardAnswer = findViewById<TextView>(R.id.flashcard_answer)
+
+
+        if(allFlashcards.size > 0) {
+            flashcardQuestion.text = allFlashcards[0].question
+            flashcardAnswer.text = allFlashcards[0].answer
+        }
+
+
+        findViewById<TextView>(R.id.flashcard_question).setOnClickListener {
             findViewById<TextView>(R.id.flashcard_answer).visibility = View.VISIBLE
             findViewById<TextView>(R.id.flashcard_question).visibility = View.INVISIBLE
         }
         Log.i("Fatima", "Question tab was clicked")
 
-        findViewById<View>(R.id.flashcard_answer).setOnClickListener {
+        findViewById<TextView>(R.id.flashcard_answer).setOnClickListener {
             findViewById<TextView>(R.id.flashcard_answer).visibility = View.INVISIBLE
             findViewById<TextView>(R.id.flashcard_question).visibility = View.VISIBLE
         }
@@ -60,40 +78,63 @@ class MainActivity : AppCompatActivity() {
         val resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
-                // This code is executed in StartingActivity after we come back from EndingActivity
 
-                // This extracts any data that was passed back from EndingActivity
                 val data: Intent? = result.data
-                if (data != null) { // Check that we have data returned
-                    val string1 =
-                        data.getStringExtra("question") // 'string1' needs to match the key we used when we put the string in the Intent
-                    val string2 = data.getStringExtra("answer")
+                if (data != null) {
+                    val questionString = data.getStringExtra("QUESTION_KEY")
+                    val answerString = data.getStringExtra("ANSWER_KEY")
 
+                    findViewById<TextView>(R.id.flashcard_question).text = questionString
+                    findViewById<TextView>(R.id.flashcard_answer).text = answerString
 
-                    // Log the value of the strings for easier debugging
-                    Log.i("MainActivity", "question: $string1")
+                    Log.i("MainActivity", "question: $questionString")
 
-                    Log.i("MainActivity", "answer: $string2")
-                } else {
+                    Log.i("MainActivity", "answer: $answerString")
+
+                    if (!questionString.isNullOrEmpty() && !answerString.isNullOrEmpty()) {
+                        flashcardDatabase.insertCard(Flashcard(questionString, answerString))
+                        allFlashcards = flashcardDatabase.getAllCards().toMutableList()
+
+                    }
+                }
+                else {
                     Log.i("MainActivity", "Returned null data from AddCardActivity")
                 }
 
             }
 
-
-
-
-        findViewById<ImageView>(R.id.addButton).setOnClickListener {
+        findViewById<View>(R.id.addButton).setOnClickListener {
             val intent = Intent(this, AddCardActivity::class.java)
-            // Launch EndingActivity wi the resultLauncher so we can execute more code
-            // once we come back here from EndingActivity
             resultLauncher.launch(intent)
+
         }
-                }
+        val nextButton = findViewById<ImageView>(R.id.flashcardnextbutton)
+        nextButton.setOnClickListener{
+            if (allFlashcards.isEmpty()) {
+                return@setOnClickListener
+            }
+            currCardDisplayedIndex++
 
+            if(currCardDisplayedIndex >= allFlashcards.size) {
+                currCardDisplayedIndex = 0
+            }
+            allFlashcards = flashcardDatabase.getAllCards().toMutableList()
 
+            val question = allFlashcards[currCardDisplayedIndex].question
+            val answer = allFlashcards[currCardDisplayedIndex].answer
+
+            flashcardQuestion.text = question
+            flashcardAnswer.text = answer
 
             }
+        }
+}
+
+
+
+
+
+
 
 
 

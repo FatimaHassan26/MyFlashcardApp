@@ -13,17 +13,22 @@ class AddCardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_card)
 
 
+
+
         findViewById<ImageView>(R.id.SaveButton).setOnClickListener {
             val data = Intent()// create a new Intent, this is where we will put our data
 
+            findViewById<EditText>(R.id.FieldQuestion).text.toString()
+            findViewById<EditText>(R.id.FieldAnswer).text.toString()
+
             data.putExtra(
-                "question",
-                "string1"
+                "QUESTION_KEY",
+                findViewById<EditText>(R.id.FieldQuestion).text.toString()
             ) // puts one string into the Intent, with the key as 'string1'
 
             data.putExtra(
-                "answer",
-                "string2"
+                "ANSWER_KEY",
+                findViewById<EditText>(R.id.FieldAnswer).text.toString()
             ) // puts another string into the Intent, with the key as 'string2
 
             setResult(RESULT_OK, data) // set result code and bundle data for response
