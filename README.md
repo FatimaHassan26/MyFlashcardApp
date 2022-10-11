@@ -5,7 +5,7 @@
 Saving Flashcards to a Database
 
 ### App Walk-though
-<img src="http://g.recordit.co/Sf81DB3HtK.gif" width=200><br>
+<img src="http://g.recordit.co/ytVdpe71Wk.gif" width=200><br>
 
 
 ## Required
