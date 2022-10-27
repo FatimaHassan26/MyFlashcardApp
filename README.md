@@ -2,7 +2,7 @@
 ## Lab 4
 
 ### App Description
-Animations added to flashcards
+Adding a launcher icon and adding animations and transitions
 
 ### App Walk-though
 
